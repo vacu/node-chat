@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  script
+    $(document).ready(function() {
+      $('.sendBtn').on('click', function() {
+        var message = $('.messageBox').val();
+        $('.chatBox').val($('.chatBox').val() + message);
+        socket.emit('send', { message: message });
+      });
+    });
+
+    socket.on('getmessage', function(data) {
+      $('.chatBox').val($('.chatBox').val() + data.message);
+    });
+
+  h1= title
+  p Welcome to #{title}
+
+  div
+    form#chatForm
+      textarea.chatBox#chatBox(name='chat')
+      p
+        input.messageBox#messageBox(type='text', name='message')
+    button.sendBtn#sendBtn Send
