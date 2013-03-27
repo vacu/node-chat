@@ -15,12 +15,12 @@ socket.on('sendMsgAdmin', function(data) {
 });
 
 $(document).ready(function() {
-  $('.privateform').hide();
-
   $('.setUser').on('click', function(e) {
     e.preventDefault();
+
     var username = $('.username').val();
     socket.emit('addUser', { username: username });
+
     $('.adduserform').hide();
     $('.username').attr('readonly', 'readonly');
   });
@@ -33,20 +33,26 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '.user', function(e) {
-    console.log($(this).attr('id'))
-    $('.privateform').show();
-    $('.sendPrivateMessage').attr('id', $(this).attr('id'));
+    var chatHtml = '<div id="'+$(this).attr('id')+'"><button class="close">close</button><form><textarea class="someclass"></textarea><input class="someinput" type="text" /><button id="'+$(this).attr('id')+'" class="somebutton">Send</button></form></div>';
+
+    $('#qq').append(chatHtml);
   });
 
-  $('.sendPrivateMessage').on('click', function(e) {
+  $(document).on('click', '.close', function(e) {
     e.preventDefault();
+    $(this).parent().remove();
+  });
 
-    var message = $('.privateBox').val();
-    $('.privateMessageBox').val($('.privateMessageBox').val() + $('.username').val() + ':' + message + '\n');
+  $(document).on('click', '.somebutton', function(e) {
+    e.preventDefault();
+    var message = $(this).parent().find('.someinput').val();
+    $(this).parent().find('.someclass').val($(this).parent().find('.someclass').val() + $('.username').val() + ':' + message + '\n');
+
     socket.emit('private', { message: message, id: $(this).attr('id') });
   });
 
   socket.on('sendMsgPrivate', function(data) {
-    $('.privateMessageBox').val($('.privateMessageBox').val() + data.username + ':' + data.message + '\n');
+    console.log(data.hostId)
+    $('div#' + data.hostId).find('.someclass').val($('div#' + data.hostId).find('.someclass').val() + data.username + ':' + data.message + '\n');
   });
 });

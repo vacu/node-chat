@@ -66,11 +66,12 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('private', function(data) {
     data.username = socket.username;
+    data.hostId = socket.id;
     io.sockets.sockets[data.id].emit('sendMsgPrivate', data);
   });
 
-  // refresh list every 10 seconds
+  // refresh list every 60 seconds
   setInterval(function() {
     socket.broadcast.to(room).emit('userlist', { data: clients });
-  }, 10000);
+  }, 60000);
 });
