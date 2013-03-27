@@ -36,10 +36,13 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '.user', function(e) {
-    var chatHtml = '<div id="' + $(this).attr('id') + '">';
+    var self = $(this)
+      , chatHtml = '';
+
+    chatHtml += '<div id="' + self.attr('id') + '">';
     chatHtml += '<button class="closeBtn">close</button>';
     chatHtml += '<form><textarea class="privateChatTbox"></textarea><input class="privateChatText" type="text" />';
-    chatHtml += '<button id="' + $(this).attr('id') + '" class="privateChatSend">Send</button></form>';
+    chatHtml += '<button id="' + self.attr('id') + '" class="privateChatSend">Send</button></form>';
     chatHtml += '</div>';
 
     $('#privateChatsWrapper').append(chatHtml);
@@ -54,8 +57,8 @@ $(document).ready(function() {
     e.preventDefault();
 
     var self      = $(this)
-      , message   = $(this).parent().find('.privateChatText').val()
-      , chatTBox  = $(this).parent().find('.privateChatTbox');
+      , message   = self.parent().find('.privateChatText').val()
+      , chatTBox  = self.parent().find('.privateChatTbox');
 
     chatTBox.val(chatTBox.val() + $('.username').val() + ':' + message + '\n');
     socket.emit('private', { message: message, id: self.attr('id') });
