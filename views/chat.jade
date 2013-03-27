@@ -21,7 +21,15 @@ block content
     div.userWrapper
       form.adduserform(method='post', name='setuser')
         div.input-append
-          input.span2.username(type='text', name='username', placeholder='Nickname')
+          if user
+            input.span2.username(type='text', name='username', placeholder='Nickname', value= user.displayName)
+          else
+            input.span2.username(type='text', name='username', placeholder='Nickname')
           button.btn.setUser Join
+
+      if (!user)
+        a.loginGoogle(href="/auth/google") Login with Google
+      else
+        a.logoutGoogle(href='/logout') Logout from Google
 
     div#privateChatsWrapper

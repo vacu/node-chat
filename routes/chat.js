@@ -1,8 +1,3 @@
-
-/*
- * GET home page.
- */
-
 exports.index = function(req, res) {
-  res.render('chat', { title: 'Chat test' })
+  res.render('chat', { title: 'Chat test', user: req.user })
 };
