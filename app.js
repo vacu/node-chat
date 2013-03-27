@@ -52,6 +52,7 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('addUser', function(client) {
+    client.id = socket.id;
     socket.username = client.username;
     clients[client.username] = client;
 
@@ -64,7 +65,8 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('private', function(data) {
-    // private message
+    data.username = socket.username;
+    io.sockets.sockets[data.id].emit('sendMsgPrivate', data);
   });
 
   // refresh list every 10 seconds
