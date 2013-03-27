@@ -1,39 +1,7 @@
 extends layout
 
 block content
-  script
-    $(document).ready(function() {
-      $('.setUser').on('click', function(e) {
-        e.preventDefault();
-        var username = $('.username').val();
-        socket.emit('addUser', { username: username });
-      });
-
-      $('.sendBtn').on('click', function(e) {
-        e.preventDefault();
-        var message = $('.messageBox').val();
-        $('.chatBox').val($('.chatBox').val() + message);
-        socket.emit('send', { message: message });
-      });
-    });
-
-    socket.on('sendMsgAdmin', function(data) {
-      $('.chatBox').val($('.chatBox').val() + data.message);
-    });
-
-    socket.on('userlist', function(data) {
-      var html = '';
-
-      $.each(data, function(key, value) {
-        $.each(value, function(key, client) {
-          html += '<p>' + client.username + '</p>';
-        })
-      });
-
-      $('#users').html(html);
-      $('.user').hide();
-      $('.username').attr('type', 'read-only');
-    });
+  script(src='/js/chat.js')
 
   h1= title
   p Welcome to #{title}
@@ -47,7 +15,13 @@ block content
 
     div#users
 
-    form.user(method='post', name='setuser')
+    form.adduserform(method='post', name='setuser')
       p
         input.username(type='text', name='username')
       button.setUser Join
+
+    form.privateform(method='post', name='privatemessage')
+      textarea.privateMessageBox
+      p
+        input.privateBox(type='text')
+      button.sendPrivateMessage Send

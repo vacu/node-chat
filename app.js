@@ -9,7 +9,6 @@ var express = require('express')
 
 var app = express()
   , server = require('http').createServer(app)
-  // , admin = require('./routes/admin')
   , chat = require('./routes/chat');
 
 GLOBAL.io = require('socket.io').listen(server);
@@ -33,7 +32,6 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-// app.get('/admin/:chatId', admin.chat);
 app.get('/chat', chat.index);
 
 server.listen(app.get('port'), function(){
@@ -49,6 +47,7 @@ io.sockets.on('connection', function(socket) {
   socket.join(room);
 
   socket.on('send', function(data) {
+    data.username = socket.username;
     socket.broadcast.to(room).emit('sendMsgAdmin', data);
   });
 
@@ -57,24 +56,19 @@ io.sockets.on('connection', function(socket) {
     clients[client.username] = client;
 
     socket.broadcast.to(room).emit('userlist', { data: clients });
-    // console.log('connect = ' + socket.manager.roomClients)
-    // client.on('disconnect', function() {
-      // clients.splice(clients.indexOf(client), 1);
-      // socket.broadcast.to(room).emit('userlist', { data: clients });
-    //   socket.broadcast.to(room).emit('userlist', socket.manager.roomClients);
-    //   console.log('disconnect = ' + socket.manager.roomClients)
-    // });
   });
 
   socket.on('disconnect', function() {
-    // for (var client in clients) {
-    //   var currClient = clients[client];
-
-    //   if (currClient.username == socket.username) {
-    //     clients.splice(client, 1);
-    //   }
-    // }
     delete clients[socket.username];
     socket.broadcast.to(room).emit('userlist', { data: clients });
   });
+
+  socket.on('private', function(data) {
+    // private message
+  });
+
+  // refresh list every 10 seconds
+  setInterval(function() {
+    socket.broadcast.to(room).emit('userlist', { data: clients });
+  }, 10000);
 });
