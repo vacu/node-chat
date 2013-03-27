@@ -8,17 +8,20 @@ block content
   p Welcome to #{title}
 
   div
-    form#chatForm
-      textarea.chatBox#chatBox(name='chat')
-      p
-        input.messageBox#messageBox(type='text', name='message')
-      button.sendBtn#sendBtn Send
+    div.chatWrapper
+      form#chatForm
+        div
+          textarea.chatBox#chatBox(name='chat', readonly='readonly')
+        div.input-append
+          input.span2.messageBox#messageBox(type='text', name='message')
+          button.btn.sendBtn#sendBtn Send
 
     div#users
 
-    form.adduserform(method='post', name='setuser')
-      p
-        input.username(type='text', name='username')
-      button.setUser Join
+    div.userWrapper
+      form.adduserform(method='post', name='setuser')
+        div.input-append
+          input.span2.username(type='text', name='username', placeholder='Nickname')
+          button.btn.setUser Join
 
-  div#privateChatsWrapper
+    div#privateChatsWrapper

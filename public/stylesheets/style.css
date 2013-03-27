@@ -8,10 +8,53 @@ a {
 }
 
 .chatBox {
-  width: 150px;
-  height: 150px;
+  width: 500px;
+  height: 300px;
+}
+
+.chatWrapper {
+  width: 500px;
+  display: block;
+  float: left;
+}
+
+.userWrapper {
+  display: block;
+  float: left;
 }
 
 #users {
-  border: 1px solid red;
+  display: block;
+  float: right;
+  border-left: 5px dotted green;
+  padding: 0px 0px 0px 5px;
+  width: 200px;
+}
+
+.user {
+  border: 2px dotted green;
+  display: block;
+  text-align: center;
+}
+
+#messageBox {
+  width: 450px;
+}
+
+#privateChatsWrapper {
+  display: block;
+  margin-left: 600px;
+  width: 550px;
+}
+
+.singleChatWrapper {
+  display: block;
+  border: 2px dotted green;
+  width: 100%;
+  padding: 5px 5px 5px 5px;
+}
+
+.privateChatTbox {
+  width: 535px;
+  height: 300px;
 }
