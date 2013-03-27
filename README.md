@@ -10,5 +10,10 @@ node-chat
   You cannot install socket.io on Windows through npm install!
   I recommend using a Linux VM is you are stuck with windows :>
 
+### Usage
+  * In order to send a private message click on the user in the user list
+  * The main window is the chat room
 
+### Knows bugs
+  * If the user you sent the message to doesn't have the private chat open he won't see your messages
 
