@@ -14,3 +14,5 @@ node-chat
   * In order to send a private message click on the user in the user list
   * The main window is the chat room
 
+### Run
+  Go to http://example.com/chat
