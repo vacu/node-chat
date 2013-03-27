@@ -1,8 +1,9 @@
 extends layout
 
-block content
+block head
   script(src='/js/chat.js')
 
+block content
   h1= title
   p Welcome to #{title}
 
@@ -20,4 +21,4 @@ block content
         input.username(type='text', name='username')
       button.setUser Join
 
-  div#qq
+  div#privateChatsWrapper

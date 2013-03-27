@@ -27,32 +27,43 @@ $(document).ready(function() {
 
   $('.sendBtn').on('click', function(e) {
     e.preventDefault();
-    var message = $('.messageBox').val();
-    $('.chatBox').val($('.chatBox').val() + $('.username').val() + ':' + message + '\n');
+    var message   = $('.messageBox').val()
+      , chatBox   = $('.chatBox')
+      , username  = $('.username').val();
+
+    chatBox.val(chatBox.val() + username + ':' + message + '\n');
     socket.emit('send', { message: message });
   });
 
   $(document).on('click', '.user', function(e) {
-    var chatHtml = '<div id="'+$(this).attr('id')+'"><button class="close">close</button><form><textarea class="someclass"></textarea><input class="someinput" type="text" /><button id="'+$(this).attr('id')+'" class="somebutton">Send</button></form></div>';
+    var chatHtml = '<div id="' + $(this).attr('id') + '">';
+    chatHtml += '<button class="closeBtn">close</button>';
+    chatHtml += '<form><textarea class="privateChatTbox"></textarea><input class="privateChatText" type="text" />';
+    chatHtml += '<button id="' + $(this).attr('id') + '" class="privateChatSend">Send</button></form>';
+    chatHtml += '</div>';
 
-    $('#qq').append(chatHtml);
+    $('#privateChatsWrapper').append(chatHtml);
   });
 
-  $(document).on('click', '.close', function(e) {
+  $(document).on('click', '.closeBtn', function(e) {
     e.preventDefault();
     $(this).parent().remove();
   });
 
-  $(document).on('click', '.somebutton', function(e) {
+  $(document).on('click', '.privateChatSend', function(e) {
     e.preventDefault();
-    var message = $(this).parent().find('.someinput').val();
-    $(this).parent().find('.someclass').val($(this).parent().find('.someclass').val() + $('.username').val() + ':' + message + '\n');
 
-    socket.emit('private', { message: message, id: $(this).attr('id') });
+    var self      = $(this)
+      , message   = $(this).parent().find('.privateChatText').val()
+      , chatTBox  = $(this).parent().find('.privateChatTbox');
+
+    chatTBox.val(chatTBox.val() + $('.username').val() + ':' + message + '\n');
+    socket.emit('private', { message: message, id: self.attr('id') });
   });
 
   socket.on('sendMsgPrivate', function(data) {
-    console.log(data.hostId)
-    $('div#' + data.hostId).find('.someclass').val($('div#' + data.hostId).find('.someclass').val() + data.username + ':' + data.message + '\n');
+    var chatTBox = $('div#' + data.hostId).find('.privateChatTbox');
+
+    chatTBox.val(chatTBox.val() + data.username + ':' + data.message + '\n');
   });
 });
