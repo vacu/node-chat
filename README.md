@@ -14,6 +14,3 @@ node-chat
   * In order to send a private message click on the user in the user list
   * The main window is the chat room
 
-### Knows bugs
-  * If the user you sent the message to doesn't have the private chat open he won't see your messages
-
