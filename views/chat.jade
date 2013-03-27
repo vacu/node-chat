@@ -8,6 +8,9 @@ block content
   p Welcome to #{title}
 
   div
+    div
+      if user
+        a.logoutGoogle(href='/logout') Logout from Google
     div.chatWrapper
       form#chatForm
         div
@@ -29,7 +32,5 @@ block content
 
       if (!user)
         a.loginGoogle(href="/auth/google") Login with Google
-      else
-        a.logoutGoogle(href='/logout') Logout from Google
 
     div#privateChatsWrapper
