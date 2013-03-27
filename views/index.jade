@@ -1,8 +1,19 @@
 extends layout
 
 block content
+  script
+    $(document).ready(function() {
+      $('.setUser').on('click', function(e) {
+        e.preventDefault();
+        var username = $('.username').val();
+        socket.emit('addUser', { username: username });
+      });
+    });
+
   h1= title
   p Welcome to #{title}
-  - each room in rooms
-    div
-      a(href='/admin' + room) Open chat
+
+  form.user(method='post', name='setuser')
+    p
+      input.username(type='text', name='username')
+    button.setUser Join

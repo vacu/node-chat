@@ -3,6 +3,12 @@ extends layout
 block content
   script
     $(document).ready(function() {
+      $('.setUser').on('click', function(e) {
+        e.preventDefault();
+        var username = $('.username').val();
+        socket.emit('addUser', { username: username });
+      });
+
       $('.sendBtn').on('click', function(e) {
         e.preventDefault();
         var message = $('.messageBox').val();
@@ -11,8 +17,22 @@ block content
       });
     });
 
-    socket.on('getmessage', function(data) {
+    socket.on('sendMsgAdmin', function(data) {
       $('.chatBox').val($('.chatBox').val() + data.message);
+    });
+
+    socket.on('userlist', function(data) {
+      var html = '';
+
+      $.each(data, function(key, value) {
+        $.each(value, function(key, client) {
+          html += '<p>' + client.username + '</p>';
+        })
+      });
+
+      $('#users').html(html);
+      $('.user').hide();
+      $('.username').attr('type', 'read-only');
     });
 
   h1= title
@@ -24,3 +44,10 @@ block content
       p
         input.messageBox#messageBox(type='text', name='message')
       button.sendBtn#sendBtn Send
+
+    div#users
+
+    form.user(method='post', name='setuser')
+      p
+        input.username(type='text', name='username')
+      button.setUser Join

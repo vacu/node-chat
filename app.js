@@ -9,7 +9,7 @@ var express = require('express')
 
 var app = express()
   , server = require('http').createServer(app)
-  , admin = require('./routes/admin')
+  // , admin = require('./routes/admin')
   , chat = require('./routes/chat');
 
 GLOBAL.io = require('socket.io').listen(server);
@@ -33,32 +33,48 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/admin/:chatId', admin.chat);
+// app.get('/admin/:chatId', admin.chat);
 app.get('/chat', chat.index);
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
+var clients = {};
+
 io.sockets.on('connection', function(socket) {
   var sh = socket.handshake
-    , room = '';
-
-  if (sh.headers.referer.split('/')[4] == undefined) {
-    room = sh.query.t;
-  } else {
-    room = sh.headers.referer.split('/')[4];
-  }
+    , room = 'test';
 
   socket.join(room);
 
-  socket.on('adminSend', function(data) {
-    console.log('sent to = ' + room)
-    socket.broadcast.to(room).emit('getmessage', data);
+  socket.on('send', function(data) {
+    socket.broadcast.to(room).emit('sendMsgAdmin', data);
   });
 
-  socket.on('send', function(data) {
-    console.log('sent to = ' + room)
-    socket.broadcast.to(room).emit('sendMsgAdmin', data);
+  socket.on('addUser', function(client) {
+    socket.username = client.username;
+    clients[client.username] = client;
+
+    socket.broadcast.to(room).emit('userlist', { data: clients });
+    // console.log('connect = ' + socket.manager.roomClients)
+    // client.on('disconnect', function() {
+      // clients.splice(clients.indexOf(client), 1);
+      // socket.broadcast.to(room).emit('userlist', { data: clients });
+    //   socket.broadcast.to(room).emit('userlist', socket.manager.roomClients);
+    //   console.log('disconnect = ' + socket.manager.roomClients)
+    // });
+  });
+
+  socket.on('disconnect', function() {
+    // for (var client in clients) {
+    //   var currClient = clients[client];
+
+    //   if (currClient.username == socket.username) {
+    //     clients.splice(client, 1);
+    //   }
+    // }
+    delete clients[socket.username];
+    socket.broadcast.to(room).emit('userlist', { data: clients });
   });
 });

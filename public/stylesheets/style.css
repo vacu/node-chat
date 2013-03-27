@@ -11,3 +11,7 @@ a {
   width: 150px;
   height: 150px;
 }
+
+#users {
+  border: 1px solid red;
+}
