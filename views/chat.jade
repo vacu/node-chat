@@ -11,6 +11,9 @@ block content
     div
       if user
         a.logoutGoogle(href='/logout') Logout from Google
+      else
+        a.loginGoogle(href="/auth/google") Login with Google
+
     div.chatWrapper
       form#chatForm
         div
@@ -29,8 +32,5 @@ block content
           else
             input.span2.username(type='text', name='username', placeholder='Nickname')
           button.btn.setUser Join
-
-      if (!user)
-        a.loginGoogle(href="/auth/google") Login with Google
 
     div#privateChatsWrapper

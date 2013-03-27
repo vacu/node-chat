@@ -71,8 +71,20 @@ $(document).ready(function() {
   });
 
   socket.on('sendMsgPrivate', function(data) {
-    var chatTBox = $('div#' + data.hostId).find('.privateChatTbox');
+    if ($('div#' + data.hostId).length == 0) {
+      var chatHtml = '';
 
+      chatHtml += '<div id="' + data.hostId + '" class="singleChatWrapper">';
+      chatHtml += '<div><button class="closeBtn btn btn-danger">close</button></div>';
+      chatHtml += '<div><form><textarea class="privateChatTbox" readonly="readonly"></textarea></div>';
+      chatHtml += '<div class="input-append"><input style="width: 475px;" class="privateChatText span2" type="text" />';
+      chatHtml += '<button id="' + data.hostId + '" class="privateChatSend btn">Send</button></div>';
+      chatHtml += '</form></div>';
+
+      $('#privateChatsWrapper').append(chatHtml);
+    }
+
+    var chatTBox = $('div#' + data.hostId).find('.privateChatTbox');
     chatTBox.val(chatTBox.val() + data.username + ':' + data.message + '\n');
   });
 });

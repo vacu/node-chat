@@ -9,8 +9,8 @@ var express = require('express')
   , passport = require('passport')
   , GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-var GOOGLE_CLIENT_ID      = 'YOUR GOOGLE CLIENT ID'
-  , GOOGLE_CLIENT_SECRET  = 'YOUR GOOGLE CLIENT SECRET KEY';
+var GOOGLE_CLIENT_ID      = '726276121095-vsh7f169as2c72co46g6ttnlbpbsk3oj.apps.googleusercontent.com'
+  , GOOGLE_CLIENT_SECRET  = 'MgBJa7iGlwOVnl2RAyqBObpl';
 
 passport.serializeUser(function(user, done) {
   done(null, user);
