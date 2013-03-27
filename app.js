@@ -46,9 +46,9 @@ io.sockets.on('connection', function(socket) {
 
   if (sh.headers.referer.split('/')[4] == undefined) {
     room = sh.query.t;
-  }
-  else
+  } else {
     room = sh.headers.referer.split('/')[4];
+  }
 
   socket.join(room);
 
